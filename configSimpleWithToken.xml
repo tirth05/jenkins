@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<project>
+<actions/>
+<description/>
+<keepDependencies>false</keepDependencies>
+<properties/>
+<scm class="hudson.scm.NullSCM"/>
+<canRoam>true</canRoam>
+<disabled>false</disabled>
+<blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+<jdk>(System)</jdk>
+<authToken>119a317d7c278904913773c78a241c5524</authToken>
+<triggers/>
+<concurrentBuild>false</concurrentBuild>
+<builders>
+    <hudson.tasks.BatchFile>
+      <command>java -version
+mvn -version</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+<publishers/>
+<buildWrappers/>
+</project>

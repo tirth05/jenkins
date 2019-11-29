@@ -1,0 +1,94 @@
+<project>
+<actions/>
+<description/>
+<keepDependencies>false</keepDependencies>
+<properties>
+<hudson.model.ParametersDefinitionProperty>
+<parameterDefinitions>
+<hudson.model.StringParameterDefinition>
+<name>GitUrl</name>
+<description/>
+<defaultValue>
+git@infygit.ad.infosys.com:solutions/Mainframejagacycucumbertest.git
+</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+<hudson.model.StringParameterDefinition>
+<name>GitBranch</name>
+<description/>
+<defaultValue>master</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+<hudson.model.StringParameterDefinition>
+<name>RepoPath</name>
+<description/>
+<defaultValue>Mainframejagacycucumbertest</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+<hudson.model.StringParameterDefinition>
+<name>ProjectPath</name>
+<description/>
+<defaultValue>JagacyCucumber</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+<hudson.model.StringParameterDefinition>
+<name>DockerImageName</name>
+<description/>
+<defaultValue>jagacy-testp</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+<hudson.model.StringParameterDefinition>
+<name>DockerContainerName</name>
+<description/>
+<defaultValue>jagacytestp</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+</parameterDefinitions>
+</hudson.model.ParametersDefinitionProperty>
+</properties>
+<scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+<configVersion>2</configVersion>
+<userRemoteConfigs>
+<hudson.plugins.git.UserRemoteConfig>
+<url>
+http://infygit.ad.infosys.com/solutions/Mainframejagacycucumbertest.git
+</url>
+</hudson.plugins.git.UserRemoteConfig>
+</userRemoteConfigs>
+<branches>
+<hudson.plugins.git.BranchSpec>
+<name>*/master</name>
+</hudson.plugins.git.BranchSpec>
+</branches>
+<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+<submoduleCfg class="list"/>
+<extensions/>
+</scm>
+<canRoam>true</canRoam>
+<disabled>false</disabled>
+<blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+<jdk>(System)</jdk>
+<triggers/>
+<concurrentBuild>false</concurrentBuild>
+<builders>
+<hudson.tasks.Shell>
+<command>
+sudo docker build \ --build-arg internal_file=http://172.17.0.2:80 \ --build-arg branch=${GitBranch} \ --build-arg url=${GitUrl} \ --build-arg path=${RepoPath}/ \ --build-arg project_path=${ProjectPath}/ \ -t ${DockerImageName} $WORKSPACE/Docker/ sudo docker images sudo docker run --name ${DockerContainerName} -v $WORKSPACE/Docker:/app/${ProjectPath}/target ${DockerImageName} sudo docker rm ${DockerContainerName} sudo docker rmi -f ${DockerImageName}
+sudo docker images
+sudo docker run --name ${DockerContainerName} -v $WORKSPACE/Docker:/app/${ProjectPath}/target ${DockerImageName}
+sudo docker rm ${DockerContainerName}
+sudo docker rmi -f ${DockerImageName}
+</command>
+</hudson.tasks.Shell>
+</builders>
+<publishers>
+<hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.24">
+<testResults>**/Docker/*.xml</testResults>
+<keepLongStdio>false</keepLongStdio>
+<healthScaleFactor>1.0</healthScaleFactor>
+<allowEmptyResults>false</allowEmptyResults>
+</hudson.tasks.junit.JUnitResultArchiver>
+</publishers>
+<buildWrappers/>
+</project>
